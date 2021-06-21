@@ -99,8 +99,6 @@ class Brand
         return false;
     }
 
-
-
     // Delete Data 
     public function Delete()
     {
@@ -120,6 +118,41 @@ class Brand
         $stmt->bindParam(':id_brand', $this->id_brand);
 
         //Execute Query 
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        echo json_encode(
+            array('message' => 'Something Went Wrong')
+        );
+
+        return false;
+    }
+
+    // Update Data
+    public function Update()
+    {
+        $query = 'UPDATE ' . $this->table . '
+        SET 
+            nama_brand = :nama_brand, 
+            created_at = :created_at
+        WHERE 
+            id_brand = :id_brand
+        ';
+
+        //Prepare Query
+        $stmt = $this->conn->prepare($query);
+
+        //Validation input 
+        $this->id_brand = htmlspecialchars(strip_tags($this->id_brand));
+        $this->nama_brand = htmlspecialchars(strip_tags($this->nama_brand));
+        $this->created_at = htmlspecialchars(strip_tags($this->created_at));
+
+        //Bind Param 
+        $stmt->bindParam(':id_brand', $this->id_brand);
+        $stmt->bindParam(':nama_brand', $this->nama_brand);
+        $stmt->bindParam(':created_at', $this->created_at);
+
         if ($stmt->execute()) {
             return true;
         }
