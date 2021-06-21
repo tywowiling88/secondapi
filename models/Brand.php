@@ -91,6 +91,7 @@ class Brand
         echo json_encode(
             array('message' => 'Something Went Wrong')
         );
+
         return false;
     }
 }
