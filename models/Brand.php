@@ -64,4 +64,33 @@ class Brand
 
         return $stmt;
     }
+
+    // Delete Data 
+    public function Delete()
+    {
+        $query = 'DELETE FROM 
+        ' . $this->table . '
+        WHERE 
+            id_brand = :id_brand
+        ';
+
+        //Prepare Query
+        $stmt = $this->conn->prepare($query);
+
+        //Validation input 
+        $this->id_brand = htmlspecialchars(strip_tags($this->id_brand));
+
+        //Bind Param
+        $stmt->bindParam(':id_brand', $this->id_brand);
+
+        //Execute Query 
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        echo json_encode(
+            array('message' => 'Something Went Wrong')
+        );
+        return false;
+    }
 }

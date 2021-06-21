@@ -14,7 +14,10 @@ $db = $database->connect();
 $brand = new Brand($db);
 
 // Get id_brand from URL 
-$brand->id_brand = isset($_GET['id_brand']) ? $_GET['id_brand'] : die();
+$error_m = json_encode(
+    array('message' => 'Data Not Found')
+);
+$brand->id_brand = isset($_GET['id_brand']) ? $_GET['id_brand'] : $error_m;
 
 $result = $brand->ReadSingle();
 
@@ -36,6 +39,6 @@ if ($brand->nama_brand != null && $brand->created_at != null) {
     );
 } else {
     echo json_encode(
-        array('message' => 'Data Not Found')
+        $error_m
     );
 }
