@@ -6,8 +6,8 @@ class Brand
     private $table = 'brand';
 
     // Properties
-    public $id;
-    public $name;
+    public $id_brand;
+    public $nama_brand;
     public $created_at;
 
     // Constructor with DB
@@ -39,5 +39,29 @@ class Brand
     }
 
     // Read Single Data 
-    public function 
+    public function ReadSingle()
+    {
+        $query = 'SELECT 
+            id_brand,
+            nama_brand,
+            created_at
+        FROM 
+        ' . $this->table . '
+        WHERE 
+            id_brand = ?
+        ORDER BY
+            id_brand ASC
+        ';
+
+        // Prepare Query
+        $stmt = $this->conn->prepare($query);
+
+        // Bind Param
+        $stmt->bindParam(1, $this->id_brand);     //1 refer to first '?'
+
+        // Execute The query 
+        $stmt->execute();
+
+        return $stmt;
+    }
 }
