@@ -9,6 +9,7 @@ class Brand
     public $id_brand;
     public $nama_brand;
     public $created_at;
+    public $updated_at;
 
     // Constructor with DB
     public function __construct($db)
@@ -64,6 +65,41 @@ class Brand
 
         return $stmt;
     }
+
+    public function Create()
+    {
+        $query = 'INSERT INTO ' . $this->table . ' 
+        SET 
+            id_brand = :id_brand, 
+            nama_brand = :nama_brand,
+            created_at = :created_at';
+
+        //Preapare Query
+        $stmt = $this->conn->prepare($query);
+
+        //Validation Input 
+        $this->id_brand = htmlspecialchars(strip_tags($this->id_brand));
+        $this->nama_brand = htmlspecialchars(strip_tags($this->nama_brand));
+        $this->created_at = htmlspecialchars(strip_tags($this->created_at));
+
+        //Bind Param
+        $stmt->bindParam(':id_brand', $this->id_brand);
+        $stmt->bindParam(':nama_brand', $this->nama_brand);
+        $stmt->bindParam(':created_at', $this->created_at);
+
+        // Execute The Query 
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        echo json_encode(
+            array('message' => 'Something Went Wrong')
+        );
+
+        return false;
+    }
+
+
 
     // Delete Data 
     public function Delete()
